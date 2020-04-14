@@ -26,6 +26,21 @@ const getLocalStorageData = function() {
     }
 };
 
+// Проверяет пустые ли поля
+const checkFree = function() {
+    if (todoList.children.length !== 1) {
+        todoList.querySelector('p').style.display = 'none';
+    } else {
+        todoList.querySelector('p').style.display = 'block';
+    }
+    if (todoCompleted.children.length !== 1) {
+        todoCompleted.querySelector('p').style.display = 'none';
+    } else {
+        todoCompleted.querySelector('p').style.display = 'block';
+    }
+}
+
+// Создание новой лишки
 const showNewList = function(list) {
     const li = document.createElement('li');
     li.classList.add('todo-item');
@@ -41,6 +56,8 @@ const showNewList = function(list) {
     } else {
         todoList.append(li);
     }
+
+    checkFree();
 
     // Навешиваем обработчик изменения состояния элемента
     const btnTodoCompleted = li.querySelector('.todo-complete');
@@ -58,7 +75,8 @@ const showNewList = function(list) {
     removeTodoTask.addEventListener('click', function() {
         li.remove();
         todoData.splice([todoData.indexOf(list)], 1);
-        localStorage.removeItem(`${list.value}`, `${list.completed}`)
+        localStorage.removeItem(`${list.value}`, `${list.completed}`);
+        checkFree();
     });
 
 };
@@ -94,3 +112,4 @@ todoControl.addEventListener('submit', function(e) {
 
 getLocalStorageData();
 showAllLists();
+
